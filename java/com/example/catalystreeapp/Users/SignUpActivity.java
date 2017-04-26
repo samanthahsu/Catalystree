@@ -13,7 +13,7 @@ package com.example.catalystreeapp.Users;
 
 public class SignUpActivity extends Activity
 {
-    EditText editTextUserName,editTextEmail,editTextPassword,editTextConfirmPassword;
+    EditText editTextUserName,editTextPassword,editTextConfirmPassword;
     Button btnCreateAccount;
     SessionManagement session;
     UserDbAdapter userDbAdapter;
@@ -33,7 +33,6 @@ public class SignUpActivity extends Activity
         // Get References of Views
         editTextUserName=(EditText)findViewById(R.id.editTextUserName);
 
-        editTextEmail=(EditText)findViewById(R.id.editTextEmail);
         editTextPassword=(EditText)findViewById(R.id.editTextPassword);
         editTextConfirmPassword=(EditText)findViewById(R.id.editTextConfirmPassword);
 
@@ -43,12 +42,11 @@ public class SignUpActivity extends Activity
             public void onClick(View v) {
 
                 String userName=editTextUserName.getText().toString();
-                String email=editTextEmail.getText().toString();
                 String password=editTextPassword.getText().toString();
                 String confirmPassword=editTextConfirmPassword.getText().toString();
 
                 // check if any of the fields are vacant
-                if(userName.equals("")||email.equals("")||password.equals("")||confirmPassword.equals(""))
+                if(userName.equals("")||password.equals("")||confirmPassword.equals(""))
                 {
                     Toast.makeText(getApplicationContext(), "Field Vaccant", Toast.LENGTH_LONG).show();
                     return;
@@ -60,9 +58,9 @@ public class SignUpActivity extends Activity
                 }
                 else
                 {
-                    session.createLoginSession(userName, email);
+                    session.createLoginSession(userName);
                     // Save the Data in Database
-                    UserDbAdapter.insertEntry(userName, email, password);
+                    UserDbAdapter.insertEntry(userName, password);
                     Toast.makeText(getApplicationContext(), "Account Successfully Created ", Toast.LENGTH_LONG).show();
 
                     Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
