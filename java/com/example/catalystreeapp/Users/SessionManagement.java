@@ -42,13 +42,12 @@ public class SessionManagement {
     /**
      * Create login session
      * */
-    public void createLoginSession(String name, String email){
+    public void createLoginSession(String name){
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
         // Storing name in pref
         editor.putString(KEY_NAME, name);
         // Storing email in pref
-        editor.putString(KEY_EMAIL, email);
         // commit changes
         editor.commit();
     }
