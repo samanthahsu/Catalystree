@@ -48,12 +48,11 @@ public class HeatingDataBaseAdapter {
     }
 
 
-    public void insertEntry(String username, String date, String type, Integer time) {
+    public void insertEntry(String username, String date, Integer time) {
         ContentValues newValues = new ContentValues();
         // Assign values for each row.
         newValues.put("USERNAME", username);
         newValues.put("DATE", date);
-        newValues.put("TYPE", type);
         newValues.put("TIME", time);
 
         // Insert the row into your table
