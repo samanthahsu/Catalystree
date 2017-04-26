@@ -17,7 +17,6 @@ public class UserDbAdapter {
     private static final String DATABASE_TABLE ="User";
     public static final String COLUMN_ID = "ID";
     public static final String COLUMN_USERNAME = "USERNAME";
-    public static final String COLUMN_EMAIL = "EMAIL";
     public static final String COLUMN_PASSWORD = "PASSWORD";
 
 
@@ -42,26 +41,17 @@ public class UserDbAdapter {
         return db;
     }
 
-    public static void insertEntry(String userName, String password, String email) {
+    public static void insertEntry(String userName, String password) {
             ContentValues newValues = new ContentValues();
             // Assign values for each row.
             newValues.put("USERNAME", userName);
-            newValues.put("Email", email);
             newValues.put("PASSWORD", password);
 
         // Insert the row into your table
         db.insert("User", null, newValues);
     }
 
-//    public int deleteEntry(String UserName) {
-//        //String id=String.valueOf(ID);
-//        String where = "USERNAME=?";
-//        int numberOFEntriesDeleted = db.delete("User", where, new String[]{UserName});
-//        // Toast.makeText(context, "Number fo Entry Deleted Successfully : "+numberOFEntriesDeleted, Toast.LENGTH_LONG).show();
-//        return numberOFEntriesDeleted;
-//    }
-
-//      get entry for the log in
+    //      get entry for the log in
         String getSingleEntry(String userName) {
         Cursor userCursor = db.query("User", null, " USERNAME=?", new String[]{userName}, null, null, null);
         if (userCursor.getCount() < 1) // UserName Not Exist
@@ -73,18 +63,6 @@ public class UserDbAdapter {
         String password = userCursor.getString(userCursor.getColumnIndex("PASSWORD"));
         userCursor.close();
         return password;
-    }
-
-    public void updateEntry(String userName, String password, String email) {
-        // Define the updated row content.
-        ContentValues updatedValues = new ContentValues();
-        // Assign values for each row.
-        updatedValues.put("USERNAME", userName);
-        updatedValues.put("PASSWORD", password);
-        updatedValues.put("Email", email);
-
-        String where = "USERNAME = ?";
-        db.update("User", updatedValues, where, new String[]{userName});
     }
 
     public void close() {
