@@ -36,7 +36,6 @@ public class FTransit extends Fragment{
         final EditText editTextDistance, editTextMin;
         Button btnSubmitTransit;
 
-        editTextDistance = (EditText) rootView.findViewById(R.id.editTextTransitDistance);
         editTextMin = (EditText) rootView.findViewById(R.id.editTextTransitMin);
 
 //      create new car database
@@ -58,12 +57,6 @@ public class FTransit extends Fragment{
                                                     SimpleDateFormat formata = new SimpleDateFormat("MM/dd/yyyy", Locale.CANADA);
                                                     String date = formata.format(new Date());
 
-                                                    int distance = 0;
-                                                    try {
-                                                        distance = Integer.parseInt(editTextDistance.getText().toString());
-                                                    } catch (NumberFormatException nfe) {
-                                                        System.out.println("Could not parse distance " + nfe);
-                                                    }
                                                     int time = 0;
                                                     try {
                                                         time = Integer.parseInt(editTextMin.getText().toString());
@@ -72,7 +65,7 @@ public class FTransit extends Fragment{
                                                     }
 
                                                     // Save the Data in Database
-                                                    transitDataBaseAdapter.insertEntry(username, date, distance, time);
+                                                    transitDataBaseAdapter.insertEntry(username, date, time);
                                                     Toast.makeText(getActivity().getApplicationContext(), "Data Saved", Toast.LENGTH_LONG).show();
 //                                              link back to input menu
                                                     Intent intent = new Intent(getActivity(), MainActivity.class);
