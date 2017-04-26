@@ -47,22 +47,9 @@ public class FHeating extends Fragment implements AdapterView.OnItemSelectedList
         session = new SessionManagement(getActivity().getApplicationContext());
 
         // Get References of Views
-        heatingSpinner = (Spinner) rootView.findViewById(R.id.spinner_heating_type);
         editTextMin = (EditText) rootView.findViewById(R.id.ET_heating_min);
 
         // Spinner
-        heatingSpinner.setOnItemSelectedListener(this);
-
-        heatingSpinner.setSelection(0);
-
-        List<String> categories = new ArrayList<>();
-        categories.add("Central");
-        categories.add("Baseboard");
-
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, categories);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        heatingSpinner.setAdapter(dataAdapter);
-
         btnSubmitCar = (Button) rootView.findViewById(R.id.button_heating_submit);
         btnSubmitCar.setOnClickListener(new View.OnClickListener() {
 
@@ -73,8 +60,6 @@ public class FHeating extends Fragment implements AdapterView.OnItemSelectedList
                                                 SimpleDateFormat formata = new SimpleDateFormat("MM/dd/yyyy", Locale.CANADA);
                                                 String date = formata.format(new Date());
 
-                                                String type = heatingSpinner.getSelectedItem().toString();
-
                                                 int time = 0;
                                                 try {
                                                     time = Integer.parseInt(editTextMin.getText().toString());
@@ -83,7 +68,7 @@ public class FHeating extends Fragment implements AdapterView.OnItemSelectedList
                                                 }
 
                                                 // Save the Data in Database
-                                                heatingDataBaseAdapter.insertEntry(username, date, type, time);
+                                                heatingDataBaseAdapter.insertEntry(username, date, time);
                                                 Toast.makeText(getActivity().getApplicationContext(), "Data Saved", Toast.LENGTH_LONG).show();
                                                 Intent intent = new Intent(getActivity(), MainActivity.class);
                                                 intent.putExtra("caller", "Input");
