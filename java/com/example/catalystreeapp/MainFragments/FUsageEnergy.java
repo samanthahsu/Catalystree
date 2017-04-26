@@ -132,7 +132,7 @@ public class FUsageEnergy extends Fragment {
         }
         for (int i = 0; i < 7; i++) {
             Cursor ccursor = transitCursors[i];
-            transitTotal = CalculateTransit(ccursor);
+            transitTotal = (int) CalculateTransit(ccursor);
             transit[i] = transitTotal;
         }
         for (int i = 0; i < 7; i++) {
@@ -307,25 +307,19 @@ public class FUsageEnergy extends Fragment {
         }
         return distancesum * 37 / 35;
     }
-    public int CalculateTransit(Cursor cursor) {
-        int[] distance = new int[size];
+    public double CalculateTransit(Cursor cursor) {
         int[] time = new int[size];
         cursor.moveToFirst();
         for (m = 0; m < cursor.getCount(); m++) {
-            distance[m] = cursor.getInt(cursor.getColumnIndex("DISTANCE"));
             time[m] = cursor.getInt(cursor.getColumnIndex("TIME"));
             cursor.moveToNext();
         }
         cursor.close();
-        int distancesum = 0;
-        for (int add : distance) {
-            distancesum += add;
-        }
         int timesum = 0;
         for (int add : time) {
             timesum += add;
         }
-        return distancesum + timesum;
+        return  timesum * 0.1969;
     }
     public int CalculateAC(Cursor cursor) {
         int[] time = new int[size];
