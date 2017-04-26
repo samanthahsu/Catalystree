@@ -54,7 +54,6 @@ public class WelcomeActivity extends Activity
 
         // get the References of views
         final  EditText editTextUserName=(EditText)dialog.findViewById(R.id.editTextUserNameToLogin);
-        final  EditText editTextEmail=(EditText)dialog.findViewById(R.id.editTextEmail);
         final  EditText editTextPassword=(EditText)dialog.findViewById(R.id.editTextPasswordToLogin);
 
         Button btnSignIn=(Button)dialog.findViewById(R.id.buttonSignIn);
@@ -64,7 +63,6 @@ public class WelcomeActivity extends Activity
             public void onClick(View v) {
                 // get The User name and Password
                 String userName=editTextUserName.getText().toString();
-                String email = editTextEmail.getText().toString();
                 String password=editTextPassword.getText().toString();
 
                 // fetch the Password form database for respective user name
@@ -73,7 +71,7 @@ public class WelcomeActivity extends Activity
                 // check if the Stored password matches with  Password entered by user
                 if(password.equals(storedPassword))
                 {
-                    session.createLoginSession(userName, email);
+                    session.createLoginSession(userName);
                     Toast.makeText(WelcomeActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                     Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
