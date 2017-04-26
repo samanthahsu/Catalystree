@@ -18,7 +18,6 @@ public class TransitDataBaseAdapter {
 
     public static final String COLUMN_USERNAME = "USERNAME";
     public static final String COLUMN_DATE = "DATE";
-    public static final String COLUMN_DISTANCE = "DISTANCE";
     public static final String COLUMN_TIME = "TIME";
 
     // Variable to hold the database instance
@@ -46,12 +45,11 @@ public class TransitDataBaseAdapter {
         return db;
     }
 
-    public void insertEntry(String USERNAME, String date, int distance, int time) {
+    public void insertEntry(String USERNAME, String date, int time) {
         ContentValues newValues = new ContentValues();
         // Assign values for each row.
         newValues.put("USERNAME", USERNAME);
         newValues.put("DATE", date);
-        newValues.put("DISTANCE", distance);
         newValues.put("TIME", time);
 
         // Insert the row into your table
@@ -61,13 +59,12 @@ public class TransitDataBaseAdapter {
 
     public Cursor getTransitEntry(String username, String Day) {
 
-        Cursor transitCursor = db.query(true, "TRANSIT", new String[]{"DISTANCE, TIME"}, "USERNAME=? AND DATE=?", new String[]{username, Day}, null, null, null, "50");
+        Cursor transitCursor = db.query(true, "TRANSIT", new String[]{"TIME"}, "USERNAME=? AND DATE=?", new String[]{username, Day}, null, null, null, "50");
         if (transitCursor.getCount() < 1) {
             transitCursor.close();
         }
         transitCursor.moveToFirst();
         for (int i = 0; i < transitCursor.getCount(); i++) {
-            int distance = transitCursor.getInt(transitCursor.getColumnIndex("DISTANCE"));
             int time = transitCursor.getInt(transitCursor.getColumnIndex("TIME"));
             transitCursor.moveToNext();
         }
