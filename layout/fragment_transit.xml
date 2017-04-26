@@ -14,17 +14,6 @@
         android:layout_marginTop="20dp"/>
 
     <EditText
-        android:hint="@string/distance_km"
-        android:id="@+id/editTextTransitDistance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="number"
-        android:textSize="20sp"
-        android:layout_gravity="center"
-        android:layout_marginTop="40dp"/>
-
-    <EditText
         android:hint="@string/minutes"
         android:id="@+id/editTextTransitMin"
         android:layout_width="wrap_content"
