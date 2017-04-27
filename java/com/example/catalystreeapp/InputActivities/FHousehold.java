@@ -1,59 +1,94 @@
-package com.example.catalystreeapp.InputActivities;
+package com.example.catalystreeapp.Household;
 
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
-import com.example.catalystreeapp.Household.FElectricity;
-import com.example.catalystreeapp.Household.FGas;
-import com.example.catalystreeapp.Household.FWater;
-import com.example.catalystreeapp.R;
+import com.example.catalystreeapp.Main.MasterDataBaseHelper;
 
-public class FHousehold extends AppCompatActivity {
+public class WaterDataBaseAdapter {
 
-    Button Belectricity, Bgas, Bwater;
+    private static final String DATABASE_NAME = "catalystree.db";
+    private static final int DATABASE_VERSION = 1;
+    public static final int NAME_COLUMN = 1;
+    private static final String DATABASE_TABLE ="WATER";
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_household);
-        Belectricity = (Button) findViewById(R.id.b_electricity);
-        Belectricity.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
+    public static final String COLUMN_USERNAME = "USERNAME";
+    public static final String COLUMN_DATE = "DATE";
+    public static final String COLUMN_TIME = "COST";
 
-                                        Fragment frag = new FElectricity();
-                                        frag.setArguments(getIntent().getExtras());
+    // Variable to hold the database instance
+    public SQLiteDatabase db;
+    // Context of the application using the database.
+    private final Context context;
+    // Database open/upgrade helper
+    private MasterDataBaseHelper dbHelper;
 
-                                        FragmentManager fragmentManager = getSupportFragmentManager();
-                                        fragmentManager.beginTransaction().replace(R.id.CVhouse, frag).commit();
-                                    }});
-        Bgas = (Button) findViewById(R.id.b_gas);
-        Bgas.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    public WaterDataBaseAdapter(Context _context) {
+        context = _context;
+        dbHelper = new MasterDataBaseHelper(context);
+    }
 
-                Fragment frag = new FGas();
-                frag.setArguments(getIntent().getExtras());
+    public WaterDataBaseAdapter open() throws SQLException {
+        db = dbHelper.getWritableDatabase();
+        return this;
+    }
 
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.CVhouse, frag).commit();
-            }});
+    public void close() {
+        db.close();
+    }
 
-        Bwater = (Button) findViewById(R.id.b_water);
-        Bwater.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    public SQLiteDatabase getDatabaseInstance() {
+        return db;
+    }
 
-                Fragment frag = new FWater();
-                frag.setArguments(getIntent().getExtras());
 
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.CVhouse, frag).commit();
-            }});
+    public void insertEntry(String username, String date, int cost) {
+        ContentValues newValues = new ContentValues();
+        // Assign values for each row.
+        newValues.put("USERNAME", username);
+        newValues.put("DATE", date);
+        newValues.put("COST", cost);
 
+        // Insert the row into your table
+        db.insert("WATER", null, newValues);
+        Toast.makeText(context, "Data Saved", Toast.LENGTH_SHORT).show();
+    }
+    public int deleteEntry(String username) {
+        //String id=String.valueOf(ID);
+        String where = "ID=?";
+        int numberOFEntriesDeleted = db.delete("WATER", where, new String[]{username});
+        // Toast.makeText(context, "Number fo Entry Deleted Successfully : "+numberOFEntriesDeleted, Toast.LENGTH_LONG).show();
+        return numberOFEntriesDeleted;
+    }
+
+    public Cursor getWaterEntry(String username) {
+
+        Cursor c = db.query(true, "WATER", new String[]{"date, cost"} ,"USERNAME=?", new String[]{username}, null, null, null, "12");
+        if (c.getCount() < 1) {
+            c.close();
+        }
+        for (int i = 0; i < c.getCount(); i++) {
+            c.moveToFirst();
+            String date = c.getString(c.getColumnIndex("DATE"));
+            int cost = c.getInt(c.getColumnIndex("COST"));
+            c.moveToNext();
+        }
+        return c;
+    }
+
+    public void updateEntry(String username, String password, String email) {
+        // Define the updated row content.
+        ContentValues updatedValues = new ContentValues();
+        // Assign values for each row.
+        updatedValues.put("USERNAME", username);
+        updatedValues.put("PASSWORD", password);
+        updatedValues.put("Email", email);
+
+        String where = "USERNAME = ?";
+        db.update("LOGIN", updatedValues, where, new String[]{username});
     }
 }
