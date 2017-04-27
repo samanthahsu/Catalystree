@@ -37,8 +37,6 @@ public class FProfile extends Fragment {
         String currentUsername = session.getUsername();
         txtname.setText("Username: " + currentUsername);
         TextView txtemail = (TextView) rootView.findViewById(R.id.tvEmail);
-        String currentEmail = session.getEmail();
-        txtemail.setText("Email: " + currentEmail);
 
 //        SET PANDA RUN ANIMATION
         ImageView pandaImage = (ImageView) rootView.findViewById(R.id.panda_run);
